@@ -1,0 +1,34 @@
+<form>
+  <label>HIPS Aggregated Events</label>
+  <fieldset submitButton="true" autoRun="true">
+    <input type="time" token="gtime" searchWhenChanged="true">
+      <label>Time range</label>
+      <default>
+        <earliest>-7d@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="text" token="root" searchWhenChanged="true">
+      <label>Root search</label>
+      <default>sourcetype=eset:ra</default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>HIPS Aggregated Events</title>
+      <table>
+        <title>Detailed time based information for every event</title>
+        <search>
+          <query>$root$ event_type=HIPSAggregated_Event | table application operation target action rule_name rule_id aggregate_count | rename application as Application, operation as Operation, target as Target, action as Action, rule_name as "Rule name", rule_id as "Rule id", aggregate_count as "Aggregate count"</query>
+          <earliest>$gtime.earliest$</earliest>
+          <latest>$gtime.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="drilldown">cell</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+</form>

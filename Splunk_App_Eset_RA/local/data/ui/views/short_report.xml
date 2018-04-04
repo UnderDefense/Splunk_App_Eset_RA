@@ -1,0 +1,83 @@
+<form>
+  <label>Eset Remote Administrator Report</label>
+  <description></description>
+  <fieldset submitButton="false" autoRun="true">
+    <input type="time" token="era_time" searchWhenChanged="true">
+      <label>Select time range</label>
+      <default>
+        <earliest>-7d@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Statistic by Threat Name</title>
+      <table>
+        <title>This statistic displays count of each threat with their threat type.</title>
+        <search>
+          <query>index=eset-ra hostname!=null username!=null| stats count by threat_name, threat_type |  rename threat_name as "Threat name" threat_type as "Threat type" count as "Count of events" | sort -"Count of events"</query>
+          <earliest>$era_time.earliest$</earliest>
+          <latest>$era_time.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="drilldown">cell</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Count of threat events by host</title>
+      <table>
+        <title>This statistic displays count of threat events on each host.</title>
+        <search>
+          <query>index=eset-ra hostname!=null username!=null| stats count by hostname | rename hostname as "Hostname" count as "Count" | sort -Count</query>
+          <earliest>$era_time.earliest$</earliest>
+          <latest>$era_time.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="drilldown">cell</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Threat events by hostname</title>
+      <table>
+        <title>This statistic displays all threats events(with username, threat name, threat type and file path) for every hostname</title>
+        <search>
+          <query>index=eset-ra hostname!=null username!=null| stats values(username) as "Username", values(threat_name) as "Threat name", values(threat_type) as "Threat type", values(file_path) as "File path" by hostname | rename hostname as "Hostname"</query>
+          <earliest>$era_time.earliest$</earliest>
+          <latest>$era_time.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Detailed report of threat events</title>
+      <table>
+        <title>This statistic displays detalization of all threat events by time</title>
+        <search>
+          <query>index=eset-ra username!=null occured!="*Dec*" |   table hostname, username, threat_name, file_path, occured| rename hostname as "Hostname" username as "Username" threat_name as "Threat Name" file_path as "File Path"| sort -occured</query>
+          <earliest>$era_time.earliest$</earliest>
+          <latest>$era_time.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="drilldown">cell</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+</form>

@@ -1,0 +1,33 @@
+<form>
+  <label>Threat Events - Statistic by hostnames</label>
+  <fieldset submitButton="true" autoRun="true">
+    <input type="time" token="gen_time" searchWhenChanged="true">
+      <label>Time range</label>
+      <default>
+        <earliest>-7d@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="text" token="root" searchWhenChanged="true">
+      <label>Root search</label>
+      <default>sourcetype=eset:ra</default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <table>
+        <title>Displays all threat names for every host</title>
+        <search>
+          <query>$root$ event_type="Threat_Event" | stats values(threat_name) as "Threat name" by hostname | rename hostname as "Hostname"</query>
+          <earliest>$gen_time.earliest$</earliest>
+          <latest>$gen_time.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="drilldown">cell</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">20</option>
+      </table>
+    </panel>
+  </row>
+</form>

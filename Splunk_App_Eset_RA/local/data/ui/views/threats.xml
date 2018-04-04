@@ -1,0 +1,47 @@
+<form>
+  <label>Threat Events - Detailed statistic</label>
+  <fieldset submitButton="true" autoRun="true">
+    <input type="time" token="gen_time" searchWhenChanged="true">
+      <label>Time range</label>
+      <default>
+        <earliest>-7d@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="text" token="root" searchWhenChanged="true">
+      <label>Root search</label>
+      <default>sourcetype=eset:ra</default>
+    </input>
+    <input type="dropdown" token="hostname" searchWhenChanged="true">
+      <label>Hostname</label>
+      <choice value="*">All</choice>
+      <search>
+        <query>sourcetype=eset:ra event_type="Threat_Event"  hostname=$hostname$  | stats count by hostname |sort -count| table hostname</query>
+        <earliest>$gen_time.earliest$</earliest>
+        <latest>$gen_time.latest$</latest>
+      </search>
+      <fieldForLabel>hostname</fieldForLabel>
+      <fieldForValue>hostname</fieldForValue>
+      <default>*</default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Threats</title>
+      <table>
+        <title>Detailed time based information for every event</title>
+        <search>
+          <query>$root$ event_type="Threat_Event" hostname=$hostname$ | table severity,scanner_id,threat_type, hostname ,username,   ipv4,threat_name, action_taken, object_uri, processname, occured| rename severity as "Severity" threat_type as "Threat type" hostname as "Computer name" threat_name as "Threat name" action_taken as "Action" object_uri as "Object" processname as "Process name" username as "User" _time as "Occured"  ipv4 as "IP" scanner_id as "Scanner Id"|  sort - occured</query>
+          <earliest>$gen_time.earliest$</earliest>
+          <latest>$gen_time.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">row</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="wrap">false</option>
+      </table>
+    </panel>
+  </row>
+</form>

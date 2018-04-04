@@ -1,0 +1,71 @@
+<form>
+  <label>Threat Events - Statistic by threat names</label>
+  <fieldset submitButton="true" autoRun="true">
+    <input type="time" token="gen_time" searchWhenChanged="true">
+      <label>Time range</label>
+      <default>
+        <earliest>-7d@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="text" token="root" searchWhenChanged="true">
+      <label>Root search</label>
+      <default>sourcetype=eset:ra</default>
+    </input>
+    <input type="dropdown" token="scanner_id" searchWhenChanged="true">
+      <label>Scanner id</label>
+      <choice value="*">All</choice>
+      <search>
+        <query>sourcetype=eset:ra event_type="Threat_Event" scanner_id="$scanner_id$" threat_name=$thr_nm$ hostname=$hostname$ | stats count by scanner_id | table scanner_id</query>
+        <earliest>$gen_time.earliest$</earliest>
+        <latest>$gen_time.latest$</latest>
+      </search>
+      <fieldForLabel>scanner_id</fieldForLabel>
+      <fieldForValue>scanner_id</fieldForValue>
+      <default>*</default>
+    </input>
+    <input type="dropdown" token="thr_nm" searchWhenChanged="true">
+      <label>Threat Name</label>
+      <choice value="*">All</choice>
+      <search>
+        <query>sourcetype=eset:ra event_type="Threat_Event" scanner_id="$scanner_id$" threat_name=$thr_nm$ hostname=$hostname$ | stats count by threat_name| sort - count  | table threat_name</query>
+        <earliest>$gen_time.earliest$</earliest>
+        <latest>$gen_time.latest$</latest>
+      </search>
+      <fieldForLabel>threat_name</fieldForLabel>
+      <fieldForValue>threat_name</fieldForValue>
+      <default>*</default>
+      <initialValue>*</initialValue>
+    </input>
+    <input type="dropdown" token="hostname" searchWhenChanged="true">
+      <label>User</label>
+      <choice value="*">All</choice>
+      <search>
+        <query>sourcetype=eset:ra event_type="Threat_Event" scanner_id="$scanner_id$" threat_name=$thr_nm$ hostname=$hostname$  | stats count by hostname |sort -count| table hostname</query>
+        <earliest>$gen_time.earliest$</earliest>
+        <latest>$gen_time.latest$</latest>
+      </search>
+      <fieldForLabel>hostname</fieldForLabel>
+      <fieldForValue>hostname</fieldForValue>
+      <default>*</default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Statistic by threat names</title>
+      <table>
+        <title>Displays all infected hosts for every threat name</title>
+        <search>
+          <query>$root$ event_type="Threat_Event" scanner_id="$scanner_id$" threat_name=$thr_nm$ hostname=$hostname$| stats values(hostname) as "Infected hosts" by threat_name | rename threat_name as "Threat name"</query>
+          <earliest>$gen_time.earliest$</earliest>
+          <latest>$gen_time.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="drilldown">cell</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">20</option>
+      </table>
+    </panel>
+  </row>
+</form>

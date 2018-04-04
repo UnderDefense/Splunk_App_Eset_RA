@@ -1,0 +1,32 @@
+<form>
+  <label>Audit events</label>
+  <fieldset submitButton="true" autoRun="true">
+    <input type="time" token="gtime" searchWhenChanged="true">
+      <label>Time</label>
+      <default>
+        <earliest>-7d@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="text" token="root" searchWhenChanged="true">
+      <label>Root search</label>
+      <default>sourcetype=eset:ra</default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>$root$ event_type=Audit_Event | table action target result detail domain hostname severity | rename target as User, action as Action, detail as "Detailed information", domain as Domain, hostname as Hostname, result as Result, severity as Severity</query>
+          <earliest>$gtime.earliest$</earliest>
+          <latest>$gtime.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="drilldown">cell</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+</form>

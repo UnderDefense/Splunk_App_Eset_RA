@@ -1,0 +1,63 @@
+[views/home]
+version = 7.0.2
+modtime = 1522667551.236611000
+
+[views/admin_login_attempts]
+version = 7.0.2
+modtime = 1522668979.586237000
+
+[views/app_check]
+access = read : [ * ], write : [ admin ]
+export = none
+version = 7.0.2
+modtime = 1522669152.495734000
+
+[views/audit_events]
+version = 7.0.2
+modtime = 1522669183.438657000
+
+[views/computer_status]
+version = 7.0.2
+modtime = 1522669245.236002000
+
+[views/hips_aggregated_events]
+version = 7.0.2
+modtime = 1522669331.041618000
+
+[views/short_report]
+version = 7.0.2
+modtime = 1522669387.543785000
+
+[views/threats2]
+version = 7.0.2
+modtime = 1522669661.543174000
+
+[views/threats]
+version = 7.0.2
+modtime = 1522669818.784264000
+
+[views/threats3]
+version = 7.0.2
+modtime = 1522669876.647298000
+
+[views/threats_firewall]
+version = 7.0.2
+modtime = 1522669934.819695000
+
+[savedsearches/%5BERA%5D%20Host%20with%20multiple%20infection%20for%2024%20hours]
+access = read : [ * ], write : [ admin ]
+export = none
+version = 7.0.2
+modtime = 1522680349.132463000
+
+[savedsearches/%5BERA%5D%20%20Host%20with%20multiple%20infections%20for%203%20days]
+access = read : [ * ], write : [ admin ]
+export = none
+version = 7.0.2
+modtime = 1522680519.192916000
+
+[savedsearches/%5BERA%5D%20Host%20with%20event%20severity%20%22Critical%22%20or%20%22Fatal%22]
+access = read : [ * ], write : [ admin ]
+export = none
+version = 7.0.2
+modtime = 1522680635.415478000

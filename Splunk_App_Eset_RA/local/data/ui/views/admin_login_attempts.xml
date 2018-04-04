@@ -1,0 +1,31 @@
+<form>
+  <label>Admin panel login attempts</label>
+  <description>ESET Remote Administrator Web Console login attempts</description>
+  <fieldset submitButton="false" autoRun="true">
+    <input type="time" token="gen_time" searchWhenChanged="true">
+      <label>General time</label>
+      <default>
+        <earliest>-7d@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Login attempts</title>
+      <table>
+        <search>
+          <query>sourcetype=eset:ra event_type=Audit_Event | table action, target, severity, result, domain, occured | rename severity as "Severity" action as "Action" target as "User Name" result as "Result" domain as "Domain" occured as "Occured"</query>
+          <earliest>$gen_time.earliest$</earliest>
+          <latest>$gen_time.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</form>

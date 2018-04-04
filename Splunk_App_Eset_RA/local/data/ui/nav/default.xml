@@ -1,0 +1,28 @@
+<nav search_view="main_page" color="#4fa484">
+  <view name="main_page" default='true'/>
+  <collection label="Computers">
+    <view name="computer_status"/>
+  </collection>
+  <collection label="Threats">
+    <view name="threats"/>
+    <view name="threats2"/>
+    <view name="threats3"/>
+    <view name="threats_firewall"/>
+    <view name="hips_aggregated_events"/>
+  </collection>
+  <collection label="Report">
+    <view name="admin_login_attempts"/>
+    <view name="audit_events" />
+  </collection>
+  <collection label="Admin">
+    <view name="app_check"/>
+  </collection>
+  <collection label="Default">
+   <view name="search" />
+   <view name="data_models" />
+   <view name="reports" />
+   <view name="alerts" />
+   <view name="dashboards" />
+  </collection>
+</nav>
+
